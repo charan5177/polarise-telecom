@@ -50,10 +50,14 @@ export const Sidebar: React.FC = () => {
   const links = isAdmin ? adminLinks : employeeLinks;
 
   return (
-    <aside className="w-64 shrink-0 border-r border-slate-200 bg-white min-h-[calc(100vh-4rem)] p-4 flex flex-col justify-between">
+    <aside className={`w-64 shrink-0 border-r min-h-[calc(100vh-4rem)] p-4 flex flex-col justify-between ${
+      isAdmin ? 'border-teal-100 bg-white' : 'border-pink-100 bg-white'
+    }`}>
       <div>
-        <div className="mb-4 px-3 text-[11px] font-bold uppercase tracking-wider text-slate-400">
-          {isAdmin ? 'Administrative Control' : 'Telecalling Station'}
+        <div className={`mb-4 px-3 text-[11px] font-black uppercase tracking-wider ${
+          isAdmin ? 'text-teal-700' : 'text-pink-600'
+        }`}>
+          {isAdmin ? 'Luxury Mint & Teal Admin Suite' : 'Pastel Pink & Blue Telecaller Hub'}
         </div>
         <nav className="space-y-1">
           {links.map((link) => {
@@ -66,8 +70,12 @@ export const Sidebar: React.FC = () => {
                 className={({ isActive }) =>
                   `flex items-center space-x-3 rounded-xl px-3.5 py-2.5 text-xs font-bold transition-all ${
                     isActive
-                      ? 'bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/20 font-black'
-                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                      ? isAdmin
+                        ? 'bg-gradient-to-r from-teal-800 via-teal-700 to-emerald-600 text-white shadow-md shadow-teal-700/25 font-black'
+                        : 'bg-gradient-to-r from-pink-500 via-rose-400 to-sky-400 text-white shadow-md shadow-pink-400/25 font-black'
+                      : isAdmin
+                      ? 'text-slate-600 hover:bg-teal-50/60 hover:text-teal-900'
+                      : 'text-slate-600 hover:bg-pink-50/60 hover:text-pink-900'
                   }`
                 }
               >
@@ -80,16 +88,22 @@ export const Sidebar: React.FC = () => {
       </div>
 
       {/* System Status info at bottom of sidebar */}
-      <div className="rounded-xl border border-slate-100 bg-slate-50 p-3 text-[11px] text-slate-500">
-        <div className="flex items-center justify-between font-semibold text-slate-700">
-          <span>Engine Status</span>
-          <span className="flex items-center space-x-1 text-emerald-600">
+      <div className={`rounded-2xl border p-3.5 text-[11px] ${
+        isAdmin
+          ? 'border-teal-200/80 bg-gradient-to-br from-teal-50/70 to-emerald-50/40 text-teal-900'
+          : 'border-pink-200/80 bg-gradient-to-br from-pink-50/60 to-sky-50/50 text-slate-700'
+      }`}>
+        <div className="flex items-center justify-between font-black">
+          <span className={isAdmin ? 'text-teal-950 uppercase tracking-wider text-[10px]' : 'text-pink-950 uppercase tracking-wider text-[10px]'}>
+            Telephony PBX
+          </span>
+          <span className="flex items-center space-x-1.5 text-emerald-600 font-bold">
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
             <span>Ready</span>
           </span>
         </div>
-        <p className="mt-1 text-[10px] leading-tight text-slate-400">
-          Cloud Telephony PBX: Exotel Provider Candidate
+        <p className="mt-1 text-[10px] leading-tight text-slate-500 font-medium">
+          {isAdmin ? 'Exotel Virtual PBX • Luxury Mint & Teal Edition' : 'Exotel Virtual Carrier • Pastel Soft Edition'}
         </p>
       </div>
     </aside>

@@ -41,12 +41,9 @@ export const Navbar: React.FC = () => {
     { id: 'cyber', label: 'Cyber Violet (Purple-Pink)', preview: 'from-purple-700 via-fuchsia-600 to-pink-500' },
   ];
 
-  const brandGradient = {
-    royal: 'from-blue-700 via-indigo-600 to-slate-900 shadow-blue-500/20',
-    sunset: 'from-orange-600 via-amber-500 to-rose-400 shadow-orange-500/25',
-    emerald: 'from-emerald-700 to-teal-600 shadow-emerald-500/20',
-    cyber: 'from-purple-700 to-pink-600 shadow-purple-500/20',
-  }[theme];
+  const brandGradient = isAdmin
+    ? 'from-teal-800 via-teal-700 to-emerald-600 shadow-teal-700/25'
+    : 'from-pink-500 via-rose-400 to-sky-500 shadow-pink-400/25';
 
   return (
     <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-slate-200 bg-white/95 px-6 backdrop-blur shadow-sm transition-colors">
@@ -58,9 +55,15 @@ export const Navbar: React.FC = () => {
         <div>
           <div className="flex items-center space-x-2">
             <h1 className="text-base font-black tracking-tight text-slate-900">Polarise Telecom</h1>
-            <span className="rounded-full bg-blue-600 px-2 py-0.5 text-[10px] font-black text-white tracking-wider shadow-sm">
-              3D ENTERPRISE
-            </span>
+            {isAdmin ? (
+              <span className="rounded-full bg-gradient-to-r from-teal-800 to-emerald-600 px-2.5 py-0.5 text-[10px] font-black text-emerald-100 uppercase tracking-wider shadow-sm">
+                Executive Portal
+              </span>
+            ) : (
+              <span className="rounded-full bg-gradient-to-r from-pink-500 to-sky-500 px-2.5 py-0.5 text-[10px] font-black text-white uppercase tracking-wider shadow-sm">
+                Counselor Suite
+              </span>
+            )}
           </div>
           <p className="text-xs font-semibold text-slate-500">Polaris Educational Consultancy</p>
         </div>
@@ -87,7 +90,11 @@ export const Navbar: React.FC = () => {
         <button
           onClick={() => triggerDemoInbound()}
           disabled={!!activeCall}
-          className="flex items-center space-x-1.5 rounded-xl border border-blue-300 bg-gradient-to-r from-blue-600 to-indigo-600 px-3.5 py-1.5 text-xs font-black text-white shadow-md shadow-blue-500/20 hover:from-blue-700 hover:to-indigo-700 transition disabled:opacity-50 btn-3d-primary"
+          className={`flex items-center space-x-1.5 rounded-xl border px-3.5 py-1.5 text-xs font-black text-white shadow-md transition disabled:opacity-50 ${
+            isAdmin
+              ? 'border-teal-500/50 bg-gradient-to-r from-teal-700 to-emerald-600 shadow-teal-700/20 hover:from-teal-800 hover:to-emerald-700'
+              : 'border-pink-300/80 bg-gradient-to-r from-pink-500 to-sky-500 shadow-pink-500/20 hover:from-pink-600 hover:to-sky-600'
+          }`}
           title="Simulate an incoming phone call from a parent"
         >
           <PhoneIncoming className="h-3.5 w-3.5 text-white animate-bounce" />

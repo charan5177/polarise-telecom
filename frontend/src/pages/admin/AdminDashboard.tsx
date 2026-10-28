@@ -63,15 +63,15 @@ export const AdminDashboard: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Top Welcome Banner with Executive Corporate Navy Gradient */}
-      <div className="rounded-2xl border border-slate-700 bg-gradient-to-r from-slate-950 via-slate-900 to-blue-950 p-6 text-white shadow-xl shadow-slate-950/20">
+      {/* Top Welcome Banner with Luxury Mint & Teal Gradient */}
+      <div className="rounded-3xl border border-teal-800/50 bg-gradient-to-r from-teal-950 via-slate-900 to-emerald-950 p-6 text-white shadow-xl shadow-teal-950/20">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div>
             <div className="flex items-center space-x-2">
-              <span className="rounded-full bg-blue-600/30 border border-blue-400/30 px-3 py-0.5 text-xs font-black text-blue-300 uppercase tracking-wider">
-                Operations & Live Supervision Command
+              <span className="rounded-full bg-emerald-500/20 border border-emerald-400/30 px-3 py-0.5 text-xs font-black text-emerald-300 uppercase tracking-wider">
+                Luxury Mint & Teal Admin Command
               </span>
-              <span className="text-xs text-slate-300 font-bold">Polaris Educational Consultancy</span>
+              <span className="text-xs text-teal-200/80 font-bold">Polaris Educational Consultancy</span>
             </div>
             <h2 className="mt-1.5 text-3xl font-black tracking-tight">Central Telecalling Monitor</h2>
             <p className="mt-1 text-xs text-slate-300 font-medium">
@@ -82,16 +82,16 @@ export const AdminDashboard: React.FC = () => {
           <div className="flex flex-wrap items-center gap-2">
             <Link
               to="/admin/exports"
-              className="flex items-center space-x-1.5 rounded-xl bg-white/10 border border-white/20 px-4 py-2.5 text-xs font-black text-white shadow hover:bg-white/20 transition"
+              className="flex items-center space-x-1.5 rounded-xl bg-teal-900/60 border border-teal-400/30 px-4 py-2.5 text-xs font-black text-teal-100 shadow hover:bg-teal-800/80 transition"
             >
-              <FileSpreadsheet className="h-4 w-4 text-emerald-400" />
+              <FileSpreadsheet className="h-4 w-4 text-emerald-300" />
               <span>Export Excel Reports</span>
             </Link>
             <Link
               to="/admin/calls"
-              className="flex items-center space-x-1.5 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-black text-white shadow hover:bg-blue-700 transition"
+              className="flex items-center space-x-1.5 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 px-4 py-2.5 text-xs font-black text-white shadow hover:from-teal-700 hover:to-emerald-700 transition"
             >
-              <Radio className="h-4 w-4 text-rose-300" />
+              <Radio className="h-4 w-4 text-emerald-200" />
               <span>Live Call Logs</span>
             </Link>
           </div>
@@ -243,74 +243,6 @@ export const AdminDashboard: React.FC = () => {
               </span>
             )}
           </button>
-        </div>
-      </div>
-
-      {/* 3D Cloud PBX Virtual Rack & Extension Visualizer */}
-      <div className="rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 p-6 text-white shadow-2xl card-3d">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 border-b border-slate-800">
-          <div className="flex items-center space-x-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-600/30 border border-blue-400/40 text-blue-400">
-              <Radio className="h-5 w-5 animate-pulse" />
-            </div>
-            <div>
-              <h3 className="text-sm font-black text-white uppercase tracking-wider flex items-center space-x-2">
-                <span>3D Cloud Telephony PBX Rack Engine</span>
-                <span className="rounded-full bg-emerald-500/20 border border-emerald-400/40 px-2 py-0.5 text-[10px] font-mono text-emerald-300">
-                  ONLINE
-                </span>
-              </h3>
-              <p className="text-xs text-slate-400 font-medium">Virtual Carrier Trunk: +91 8047190000 • 10 Auto-Allocated Counselor Terminals</p>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-2 text-xs font-mono font-bold text-slate-300">
-            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-            <span>EXOTEL ENGINE: 100% OPERATIONAL</span>
-          </div>
-        </div>
-
-        {/* 10 Extension Rack Strips */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-10 gap-2.5 mt-4">
-          {employees.map((emp) => {
-            const isCallActive = emp.profile?.current_status === 'on_call';
-            const isAvail = emp.profile?.current_status === 'available';
-
-            return (
-              <div
-                key={emp.id}
-                className={`rounded-2xl border p-2.5 text-center transition-all ${
-                  isCallActive
-                    ? 'border-amber-500 bg-amber-950/40 shadow-lg shadow-amber-500/20'
-                    : isAvail
-                    ? 'border-slate-700 bg-slate-900/90 hover:border-slate-500'
-                    : 'border-slate-800 bg-slate-950/60 opacity-60'
-                }`}
-              >
-                <div className="flex items-center justify-center space-x-1.5 mb-1.5">
-                  <span
-                    className={`h-2 w-2 rounded-full ${
-                      isCallActive
-                        ? 'bg-amber-400 animate-ping'
-                        : isAvail
-                        ? 'bg-emerald-400'
-                        : 'bg-slate-600'
-                    }`}
-                  />
-                  <span className="text-[10px] font-mono font-black text-slate-400">
-                    EXT #{emp.extension || '201'}
-                  </span>
-                </div>
-                <div className="text-[11px] font-black text-white truncate">{emp.name.split(' ')[0]}</div>
-                <div className="text-[9px] font-mono font-bold text-slate-400 uppercase tracking-wider mt-0.5">
-                  {emp.employee_id}
-                </div>
-                <div className="mt-1.5 rounded-lg bg-black/40 py-0.5 px-1 text-[9px] font-mono font-bold text-slate-300">
-                  {isCallActive ? 'TALKING' : isAvail ? 'IDLE' : 'OFF'}
-                </div>
-              </div>
-            );
-          })}
         </div>
       </div>
 

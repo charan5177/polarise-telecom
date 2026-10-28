@@ -62,7 +62,9 @@ const ProtectedLayout: React.FC<{ adminOnly?: boolean; children: React.ReactNode
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className={`min-h-screen flex flex-col ${
+      isAdmin ? 'bg-[#f0fdf9]' : 'bg-[#fff5f7]'
+    }`}>
       <Navbar />
       <div className="flex flex-1">
         <Sidebar />

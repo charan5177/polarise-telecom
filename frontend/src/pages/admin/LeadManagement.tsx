@@ -38,9 +38,25 @@ export const LeadManagement: React.FC = () => {
 
   // Modals
   const [showMultiModal, setShowMultiModal] = useState(false);
+  const [showCreateSingleModal, setShowCreateSingleModal] = useState(false);
   const [showExcelModal, setShowExcelModal] = useState(false);
   const [downloadingCallSheet, setDownloadingCallSheet] = useState(false);
   const [selectedExportEmpId, setSelectedExportEmpId] = useState<string>('all');
+
+  // Single Lead Form state
+  const [singleLeadForm, setSingleLeadForm] = useState({
+    student_name: '',
+    parent_name: '',
+    phone: '',
+    alt_phone: '',
+    email: '',
+    city: 'Bengaluru',
+    state: 'Karnataka',
+    course_interest: 'Computer Science & AI Engineering',
+    priority: 'High',
+    assigned_user_id: '',
+    notes: 'Direct new lead registered by admin.'
+  });
 
   // Excel Upload state
   const [uploadFile, setUploadFile] = useState<File | null>(null);
@@ -146,6 +162,49 @@ export const LeadManagement: React.FC = () => {
   const removeBatchRow = (index: number) => {
     if (batchRows.length <= 1) return;
     setBatchRows(batchRows.filter((_, i) => i !== index));
+  };
+
+  // Create Single Lead
+  const handleCreateSingleLead = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const cleanPhone = singleLeadForm.phone.replace(/\D/g, '');
+    if (cleanPhone.length !== 10) {
+      alert('Phone number must be exactly 10 digits.');
+      return;
+    }
+    try {
+      await apiRequest('/leads', 'POST', {
+        student_name: singleLeadForm.student_name.trim(),
+        parent_name: singleLeadForm.parent_name.trim() || undefined,
+        phone: cleanPhone,
+        alt_phone: singleLeadForm.alt_phone.trim() || undefined,
+        email: singleLeadForm.email.trim() || undefined,
+        city: singleLeadForm.city,
+        state: singleLeadForm.state,
+        course_interest: singleLeadForm.course_interest,
+        priority: singleLeadForm.priority,
+        assigned_user_id: singleLeadForm.assigned_user_id ? Number(singleLeadForm.assigned_user_id) : undefined,
+        notes: singleLeadForm.notes
+      });
+      alert(`Lead for "${singleLeadForm.student_name}" created successfully!`);
+      setShowCreateSingleModal(false);
+      setSingleLeadForm({
+        student_name: '',
+        parent_name: '',
+        phone: '',
+        alt_phone: '',
+        email: '',
+        city: 'Bengaluru',
+        state: 'Karnataka',
+        course_interest: 'Computer Science & AI Engineering',
+        priority: 'High',
+        assigned_user_id: '',
+        notes: ''
+      });
+      fetchData();
+    } catch (err: any) {
+      alert(err.message || 'Failed to create lead');
+    }
   };
 
   const handleCreateMultipleLeads = async (e: React.FormEvent) => {
@@ -276,24 +335,24 @@ export const LeadManagement: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* 3D Top Header Toolbar */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 card-3d bg-white p-5 rounded-3xl border border-slate-200">
+      {/* Header Toolbar */}
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 card-3d bg-white p-5 rounded-3xl border border-teal-200/80 shadow-sm">
         <div>
           <div className="flex items-center space-x-2">
             <span className="flex h-3 w-3 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-600"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-teal-600"></span>
             </span>
             <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Admissions Leads & Parent CRM</h2>
           </div>
-          <p className="text-xs text-slate-500 font-semibold mt-0.5">
-            Real-time contact registry • 1,500+ student & parent leads • High-speed 10-counselor allocation
+          <p className="text-xs text-teal-800 font-semibold mt-0.5">
+            Real-time contact registry • {leads.length} student & parent leads registered • High-speed 10-counselor allocation
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2.5">
           {/* Download Call Sheet per Employee with selector */}
-          <div className="flex items-center rounded-2xl border border-slate-300 bg-slate-50 p-1 shadow-sm">
+          <div className="flex items-center rounded-2xl border border-teal-200 bg-teal-50/50 p-1 shadow-sm">
             <select
               value={selectedExportEmpId}
               onChange={(e) => setSelectedExportEmpId(e.target.value)}
@@ -309,7 +368,7 @@ export const LeadManagement: React.FC = () => {
             <button
               onClick={handleDownloadCallSheet}
               disabled={downloadingCallSheet}
-              className="flex items-center space-x-1.5 rounded-xl bg-blue-600 px-3 py-1.5 text-xs font-black text-white hover:bg-blue-700 transition"
+              className="flex items-center space-x-1.5 rounded-xl bg-teal-700 px-3 py-1.5 text-xs font-black text-white hover:bg-teal-800 transition"
               title="Export calling contact sheet formatted for Excel"
             >
               <Download className="h-3.5 w-3.5" />
@@ -330,12 +389,21 @@ export const LeadManagement: React.FC = () => {
             <span>Upload Excel (.xlsx / .csv)</span>
           </button>
 
+          {/* Create Single Lead Button */}
+          <button
+            onClick={() => setShowCreateSingleModal(true)}
+            className="flex items-center space-x-2 rounded-2xl bg-gradient-to-r from-teal-800 to-emerald-600 px-4 py-2.5 text-xs font-black uppercase tracking-wider text-white shadow-lg shadow-teal-700/25"
+          >
+            <Plus className="h-4 w-4" />
+            <span>Create New Lead</span>
+          </button>
+
           {/* Add Multiple Leads Button */}
           <button
             onClick={() => setShowMultiModal(true)}
-            className="flex items-center space-x-2 rounded-2xl bg-blue-600 px-4 py-2.5 text-xs font-black uppercase tracking-wider text-white shadow-lg shadow-blue-600/25 btn-3d-primary"
+            className="flex items-center space-x-2 rounded-2xl border-2 border-teal-300 bg-white hover:bg-teal-50 px-3.5 py-2.5 text-xs font-black uppercase tracking-wider text-teal-900 transition shadow-sm"
           >
-            <Plus className="h-4 w-4" />
+            <Plus className="h-4 w-4 text-teal-700" />
             <span>Batch Add Leads</span>
           </button>
         </div>
@@ -551,7 +619,41 @@ export const LeadManagement: React.FC = () => {
               {loading ? (
                 <tr><td colSpan={9} className="py-16 text-center text-slate-400 font-bold">Loading master registry ({leads.length} records)...</td></tr>
               ) : paginatedLeads.length === 0 ? (
-                <tr><td colSpan={9} className="py-16 text-center text-slate-400 font-bold">No leads matched your criteria.</td></tr>
+                <tr>
+                  <td colSpan={9} className="py-16 text-center">
+                    <div className="max-w-md mx-auto space-y-3">
+                      <div className="flex h-14 w-14 items-center justify-center rounded-3xl bg-teal-50 text-teal-700 mx-auto border-2 border-teal-200 shadow-sm">
+                        <FolderKanban className="h-7 w-7" />
+                      </div>
+                      <h3 className="text-base font-black text-slate-900 uppercase tracking-wider">
+                        {leads.length === 0 ? 'Lead Registry is Clean (0 Leads)' : 'No Leads Matched Criteria'}
+                      </h3>
+                      <p className="text-xs text-slate-500 font-medium">
+                        {leads.length === 0
+                          ? 'All fake leads have been successfully removed. Ready for you to create a new lead or upload an Excel contact sheet!'
+                          : 'Try modifying your search filter or clear your counselor selection.'}
+                      </p>
+                      {leads.length === 0 && (
+                        <div className="flex items-center justify-center space-x-3 pt-2">
+                          <button
+                            onClick={() => setShowCreateSingleModal(true)}
+                            className="flex items-center space-x-1.5 rounded-xl bg-gradient-to-r from-teal-800 to-emerald-600 px-4 py-2 text-xs font-black uppercase text-white shadow-md hover:from-teal-900 hover:to-emerald-700 transition"
+                          >
+                            <Plus className="h-3.5 w-3.5" />
+                            <span>Create New Lead</span>
+                          </button>
+                          <button
+                            onClick={() => setShowExcelModal(true)}
+                            className="flex items-center space-x-1.5 rounded-xl border border-teal-300 bg-white px-4 py-2 text-xs font-black uppercase text-teal-800 hover:bg-teal-50 transition"
+                          >
+                            <FileSpreadsheet className="h-3.5 w-3.5" />
+                            <span>Upload Excel Sheet</span>
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                </tr>
               ) : (
                 paginatedLeads.map((l) => (
                   <tr key={l.id} className="hover:bg-blue-50/40 transition">
@@ -945,6 +1047,192 @@ export const LeadManagement: React.FC = () => {
                     <span>Save All Leads</span>
                   </button>
                 </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Single Lead Creation Modal */}
+      {showCreateSingleModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm animate-in fade-in">
+          <div className="w-full max-w-xl rounded-3xl border-2 border-teal-300 bg-white p-6 shadow-2xl animate-in zoom-in-95">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+              <div className="flex items-center space-x-2.5">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-teal-800 to-emerald-600 text-white shadow-md">
+                  <Plus className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-black uppercase tracking-wider text-slate-900">
+                    Create New Student & Parent Lead
+                  </h3>
+                  <p className="text-xs text-teal-800 font-semibold">
+                    Direct entry into Polaris admissions telecalling pipeline
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowCreateSingleModal(false)}
+                className="text-slate-400 hover:text-slate-600 font-black text-xl p-1"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateSingleLead} className="space-y-4 mt-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] font-black uppercase tracking-wider text-slate-700 mb-1">
+                    Student Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Aarav Sharma"
+                    value={singleLeadForm.student_name}
+                    onChange={(e) => setSingleLeadForm({ ...singleLeadForm, student_name: e.target.value })}
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-xs font-bold text-slate-900 focus:bg-white focus:outline-none focus:border-teal-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-black uppercase tracking-wider text-slate-700 mb-1">
+                    Parent / Guardian Name
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Rajesh Sharma"
+                    value={singleLeadForm.parent_name}
+                    onChange={(e) => setSingleLeadForm({ ...singleLeadForm, parent_name: e.target.value })}
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:border-teal-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] font-black uppercase tracking-wider text-slate-700 mb-1">
+                    10-Digit Primary Phone *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    maxLength={10}
+                    placeholder="9845012345"
+                    value={singleLeadForm.phone}
+                    onChange={(e) => setSingleLeadForm({ ...singleLeadForm, phone: e.target.value.replace(/\D/g, '') })}
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-xs font-mono font-bold text-slate-900 focus:bg-white focus:outline-none focus:border-teal-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-black uppercase tracking-wider text-slate-700 mb-1">
+                    Alternate Contact / WhatsApp
+                  </label>
+                  <input
+                    type="text"
+                    maxLength={10}
+                    placeholder="Optional 10 digits"
+                    value={singleLeadForm.alt_phone}
+                    onChange={(e) => setSingleLeadForm({ ...singleLeadForm, alt_phone: e.target.value.replace(/\D/g, '') })}
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-xs font-mono font-medium text-slate-900 focus:bg-white focus:outline-none focus:border-teal-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] font-black uppercase tracking-wider text-slate-700 mb-1">
+                    Target Course / Program
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. B.Tech Computer Science & AI"
+                    value={singleLeadForm.course_interest}
+                    onChange={(e) => setSingleLeadForm({ ...singleLeadForm, course_interest: e.target.value })}
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-xs font-bold text-slate-900 focus:bg-white focus:outline-none focus:border-teal-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-black uppercase tracking-wider text-slate-700 mb-1">
+                    City / Location
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Bengaluru"
+                    value={singleLeadForm.city}
+                    onChange={(e) => setSingleLeadForm({ ...singleLeadForm, city: e.target.value })}
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:border-teal-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] font-black uppercase tracking-wider text-slate-700 mb-1">
+                    Priority Level
+                  </label>
+                  <select
+                    value={singleLeadForm.priority}
+                    onChange={(e) => setSingleLeadForm({ ...singleLeadForm, priority: e.target.value })}
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-xs font-bold text-slate-900 focus:bg-white focus:outline-none focus:border-teal-500"
+                  >
+                    <option value="Urgent">Urgent (Immediate Callback)</option>
+                    <option value="High">High Priority</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-black uppercase tracking-wider text-slate-700 mb-1">
+                    Assign To Telecaller (10 Staff)
+                  </label>
+                  <select
+                    value={singleLeadForm.assigned_user_id}
+                    onChange={(e) => setSingleLeadForm({ ...singleLeadForm, assigned_user_id: e.target.value })}
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-xs font-bold text-slate-900 focus:bg-white focus:outline-none focus:border-teal-500"
+                  >
+                    <option value="">-- Unassigned (General Pool) --</option>
+                    {employees.map(emp => (
+                      <option key={emp.id} value={emp.id}>
+                        {emp.employee_id} - {emp.name} ({emp.profile?.current_status || 'offline'})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-black uppercase tracking-wider text-slate-700 mb-1">
+                  Counselor Intake Notes
+                </label>
+                <textarea
+                  rows={2}
+                  placeholder="Parent requirements, entrance score, preferred campus..."
+                  value={singleLeadForm.notes}
+                  onChange={(e) => setSingleLeadForm({ ...singleLeadForm, notes: e.target.value })}
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:border-teal-500"
+                />
+              </div>
+
+              <div className="flex items-center justify-end space-x-2 pt-3 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setShowCreateSingleModal(false)}
+                  className="px-4 py-2 text-xs font-bold text-slate-500 hover:bg-slate-100 rounded-xl"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex items-center space-x-2 rounded-xl bg-gradient-to-r from-teal-800 to-emerald-600 px-6 py-2.5 text-xs font-black uppercase tracking-wider text-white shadow-lg shadow-teal-700/25 hover:from-teal-900 hover:to-emerald-700 transition"
+                >
+                  <span>Save & Register Lead</span>
+                </button>
               </div>
             </form>
           </div>

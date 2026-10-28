@@ -122,7 +122,7 @@ export const MyLeads: React.FC = () => {
 
           <button
             onClick={handleDialNext}
-            className="flex items-center space-x-2 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2 text-xs font-black uppercase tracking-wider text-white shadow-lg shadow-blue-500/25 hover:opacity-95 transition btn-3d-primary"
+            className="flex items-center space-x-2 rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-sky-500 px-4 py-2 text-xs font-black uppercase tracking-wider text-white shadow-lg shadow-pink-500/25 hover:from-pink-600 hover:to-sky-600 transition"
           >
             <PhoneCall className="h-4 w-4" />
             <span>Dial Next Pending Lead</span>

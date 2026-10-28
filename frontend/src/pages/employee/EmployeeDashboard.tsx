@@ -96,26 +96,26 @@ export const EmployeeDashboard: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* 3D Top Banner: Executive Operations Cockpit Header */}
-      <div className="rounded-3xl border border-blue-800/80 bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 p-6 text-white shadow-xl card-3d">
+      {/* Top Banner: Pastel Pink & Blue Telecalling Cockpit Header */}
+      <div className="rounded-3xl border border-pink-200/80 bg-gradient-to-r from-rose-950 via-slate-900 to-sky-950 p-6 text-white shadow-xl card-3d">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div>
             <div className="flex items-center space-x-2">
-              <span className="rounded-xl bg-blue-500/20 border border-blue-400/40 px-3 py-1 text-xs font-mono font-black text-blue-300">
+              <span className="rounded-xl bg-pink-500/20 border border-pink-400/40 px-3 py-1 text-xs font-mono font-black text-pink-300">
                 TERMINAL: {user?.employee_id}
               </span>
-              <span className="text-xs font-black text-blue-200 uppercase tracking-wider">
-                Admissions Telecalling Station
+              <span className="text-xs font-black text-sky-200 uppercase tracking-wider">
+                Admissions Telecalling Station • Pastel Edition
               </span>
             </div>
             <h2 className="mt-2 text-3xl font-black tracking-tight text-white">{user?.name}</h2>
             <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-slate-300 font-medium">
               <span>
-                Assigned Contacts: <strong className="text-amber-400 font-mono font-black text-sm">{totalLeadsCount || stats?.assigned_leads_count || 140} Leads</strong>
+                Assigned Contacts: <strong className="text-pink-300 font-mono font-black text-sm">{totalLeadsCount || stats?.assigned_leads_count || 0} Leads</strong>
               </span>
               <span className="text-slate-600">•</span>
               <span>
-                Pending Follow-ups: <strong className="text-blue-300 font-mono font-bold">{stats?.pending_followups_count || 0}</strong>
+                Pending Follow-ups: <strong className="text-sky-300 font-mono font-bold">{stats?.pending_followups_count || 0}</strong>
               </span>
               <span className="text-slate-600">•</span>
               <span className="flex items-center space-x-1.5">
@@ -145,17 +145,17 @@ export const EmployeeDashboard: React.FC = () => {
             {/* Test Inbound Call */}
             <button
               onClick={() => triggerDemoInbound()}
-              className="flex items-center space-x-1.5 rounded-2xl border border-blue-400/40 bg-blue-600/30 px-3.5 py-2.5 text-xs font-black text-blue-200 hover:bg-blue-600/50 transition"
+              className="flex items-center space-x-1.5 rounded-2xl border border-pink-400/40 bg-pink-600/30 px-3.5 py-2.5 text-xs font-black text-pink-200 hover:bg-pink-600/50 transition"
               title="Test receiving an incoming parent call"
             >
-              <PhoneIncoming className="h-4 w-4 text-blue-300" />
+              <PhoneIncoming className="h-4 w-4 text-pink-300" />
               <span>Test Inbound Call</span>
             </button>
 
-            {/* Softphone Link */}
+            {/* Softphone Link (Pastel Pink & Sky Blue) */}
             <Link
               to="/calling"
-              className="flex items-center space-x-2 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2.5 text-xs font-black uppercase tracking-wider text-white shadow-lg shadow-blue-500/25 hover:opacity-95 transition btn-3d-primary"
+              className="flex items-center space-x-2 rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-sky-500 px-5 py-2.5 text-xs font-black uppercase tracking-wider text-white shadow-lg shadow-pink-500/25 hover:from-pink-600 hover:to-sky-600 transition"
             >
               <PhoneCall className="h-4 w-4" />
               <span>Open Softphone Console</span>

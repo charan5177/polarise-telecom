@@ -252,7 +252,7 @@ export const CallingWorkspace: React.FC = () => {
                   key={n}
                   type="button"
                   onClick={() => handleDigit(n)}
-                  className="flex flex-col items-center justify-center rounded-2xl dial-key-3d py-3 text-base font-black text-slate-800 transition hover:bg-blue-50 hover:border-blue-400 hover:text-blue-700 active:scale-95"
+                  className="flex flex-col items-center justify-center rounded-2xl dial-key-3d py-3 text-base font-black text-slate-800 transition hover:bg-pink-50 hover:border-pink-300 hover:text-pink-600 active:scale-95"
                 >
                   <span>{n}</span>
                   {sub && <span className="text-[9px] font-semibold text-slate-400 tracking-wider">{sub}</span>}
@@ -263,7 +263,7 @@ export const CallingWorkspace: React.FC = () => {
             <button
               type="submit"
               disabled={cleanDigits(phoneNumber).length !== 10}
-              className="mt-4 flex w-full items-center justify-center space-x-2 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 py-3.5 font-black uppercase tracking-wider text-white shadow-xl shadow-blue-500/30 hover:opacity-95 active:scale-95 transition disabled:opacity-40 disabled:cursor-not-allowed btn-3d-primary"
+              className="mt-4 flex w-full items-center justify-center space-x-2 rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-sky-500 py-3.5 font-black uppercase tracking-wider text-white shadow-xl shadow-pink-500/30 hover:opacity-95 active:scale-95 transition disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <PhoneCall className="h-5 w-5" />
               <span>Connect Call (Caller ID: +91 8047190000)</span>
