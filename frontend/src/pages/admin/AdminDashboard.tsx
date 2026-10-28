@@ -69,7 +69,7 @@ export const AdminDashboard: React.FC = () => {
           <div>
             <div className="flex items-center space-x-2">
               <span className="rounded-full bg-emerald-500/20 border border-emerald-400/30 px-3 py-0.5 text-xs font-black text-emerald-300 uppercase tracking-wider">
-                Luxury Mint & Teal Admin Command
+                Operations & Live Supervision Command
               </span>
               <span className="text-xs text-teal-200/80 font-bold">Polaris Educational Consultancy</span>
             </div>

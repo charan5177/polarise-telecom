@@ -57,7 +57,7 @@ export const Sidebar: React.FC = () => {
         <div className={`mb-4 px-3 text-[11px] font-black uppercase tracking-wider ${
           isAdmin ? 'text-teal-700' : 'text-pink-600'
         }`}>
-          {isAdmin ? 'Luxury Mint & Teal Admin Suite' : 'Pastel Pink & Blue Telecaller Hub'}
+          {isAdmin ? 'Administrative Operations' : 'Telecalling Station'}
         </div>
         <nav className="space-y-1">
           {links.map((link) => {
@@ -103,7 +103,7 @@ export const Sidebar: React.FC = () => {
           </span>
         </div>
         <p className="mt-1 text-[10px] leading-tight text-slate-500 font-medium">
-          {isAdmin ? 'Exotel Virtual PBX • Luxury Mint & Teal Edition' : 'Exotel Virtual Carrier • Pastel Soft Edition'}
+          {isAdmin ? 'Exotel Virtual PBX Engine • Active' : 'Exotel Virtual PBX Trunk • Connected'}
         </p>
       </div>
     </aside>

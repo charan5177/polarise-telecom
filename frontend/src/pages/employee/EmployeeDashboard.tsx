@@ -105,7 +105,7 @@ export const EmployeeDashboard: React.FC = () => {
                 TERMINAL: {user?.employee_id}
               </span>
               <span className="text-xs font-black text-sky-200 uppercase tracking-wider">
-                Admissions Telecalling Station • Pastel Edition
+                Admissions Telecalling Station
               </span>
             </div>
             <h2 className="mt-2 text-3xl font-black tracking-tight text-white">{user?.name}</h2>
