@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Pulse animation for active call */
+@keyframes callPulse {
+  0% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.9; }
+}
+
+.animate-call-pulse {
+  animation: callPulse 1.8s infinite ease-in-out;
+}
+
+/* Theme gradients */
+.theme-gradient-sunset {
+  background: linear-gradient(135deg, #ea580c 0%, #f59e0b 50%, #f43f5e 100%);
+}
+
+.theme-gradient-sunset-soft {
+  background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 50%, #ffe4e6 100%);
+}
+
+.theme-gradient-royal {
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #6366f1 100%);
+}
+
+.theme-gradient-emerald {
+  background: linear-gradient(135deg, #065f46 0%, #059669 50%, #10b981 100%);
+}
+
+.theme-gradient-cyber {
+  background: linear-gradient(135deg, #581c87 0%, #9333ea 50%, #ec4899 100%);
+}
+
+/* 3D Design System Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.perspective-2000 {
+  perspective: 2000px;
+}
+
+.card-3d {
+  transform-style: preserve-3d;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-3d-hover:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 20px 40px -12px rgba(37, 99, 235, 0.18), 0 8px 16px -4px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+.btn-3d-primary {
+  transform-style: preserve-3d;
+  border-bottom: 3.5px solid #1d4ed8;
+  box-shadow: 0 6px 16px -2px rgba(37, 99, 235, 0.35);
+  transition: all 0.12s ease;
+}
+
+.btn-3d-primary:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+  box-shadow: 0 2px 6px -1px rgba(37, 99, 235, 0.25);
+}
+
+.btn-3d-emerald {
+  transform-style: preserve-3d;
+  border-bottom: 3.5px solid #047857;
+  box-shadow: 0 6px 16px -2px rgba(16, 185, 129, 0.35);
+  transition: all 0.12s ease;
+}
+
+.btn-3d-emerald:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+}
+
+.dial-key-3d {
+  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+  border-bottom: 3px solid #cbd5e1;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06);
+  transition: all 0.1s ease;
+}
+
+.dial-key-3d:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+/* 3D Glowing Orb */
+.glow-orb-3d {
+  box-shadow: 0 0 25px rgba(59, 130, 246, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.8);
+}
