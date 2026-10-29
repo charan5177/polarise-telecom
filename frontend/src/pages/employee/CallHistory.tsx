@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { apiRequest, Call } from '../../services/api';
 import { StatusBadge } from '../../components/StatusBadge';
-import { History, PhoneOutgoing, PhoneIncoming, Filter, ShieldAlert } from 'lucide-react';
+import { History, PhoneOutgoing, PhoneIncoming, Filter } from 'lucide-react';
 
 export const CallHistory: React.FC = () => {
   const [calls, setCalls] = useState<Call[]>([]);
@@ -51,13 +51,6 @@ export const CallHistory: React.FC = () => {
             <option value="Inbound">Inbound Calls</option>
           </select>
         </div>
-      </div>
-
-      <div className="rounded-xl border border-amber-200 bg-amber-50/70 p-3.5 text-xs text-amber-900 flex items-center space-x-2.5">
-        <ShieldAlert className="h-4 w-4 text-amber-600 shrink-0" />
-        <span className="font-semibold">
-          Confidentiality Policy: Call recordings are restricted to administrative compliance and quality review.
-        </span>
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
