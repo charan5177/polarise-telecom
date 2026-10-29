@@ -1,0 +1,10 @@
+{
+  "name": "polarise-telecom",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Polarise Telecom Technology - Cloud Telecalling & Admissions CRM Platform",
+  "scripts": {
+    "build": "npm --prefix frontend install && npm --prefix frontend run build",
+    "dev": "npm --prefix frontend run dev"
+  }
+}

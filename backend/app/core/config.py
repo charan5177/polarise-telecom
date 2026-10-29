@@ -12,8 +12,12 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 12  # 12 hours
     
-    # Database
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./polarise_telecom.db")
+    # Database (uses writable /tmp on serverless environments like Vercel)
+    is_serverless: bool = os.getenv("VERCEL") is not None or os.getenv("AWS_LAMBDA_FUNCTION_NAME") is not None
+    DATABASE_URL: str = os.getenv(
+        "DATABASE_URL", 
+        "sqlite:////tmp/polarise_telecom.db" if (os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME")) else "sqlite:///./polarise_telecom.db"
+    )
     
     # Telephony
     DEMO_MODE: bool = os.getenv("DEMO_MODE", "true").lower() in ("true", "1", "yes")
