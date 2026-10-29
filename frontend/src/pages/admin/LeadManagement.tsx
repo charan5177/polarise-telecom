@@ -167,9 +167,14 @@ export const LeadManagement: React.FC = () => {
   // Create Single Lead
   const handleCreateSingleLead = async (e: React.FormEvent) => {
     e.preventDefault();
-    const cleanPhone = singleLeadForm.phone.replace(/\D/g, '');
+    let cleanPhone = singleLeadForm.phone.replace(/\D/g, '');
+    if (cleanPhone.length === 12 && cleanPhone.startsWith('91')) {
+      cleanPhone = cleanPhone.slice(2);
+    } else if (cleanPhone.length === 11 && cleanPhone.startsWith('0')) {
+      cleanPhone = cleanPhone.slice(1);
+    }
     if (cleanPhone.length !== 10) {
-      alert('Phone number must be exactly 10 digits.');
+      alert('Phone number must be exactly 10 digits (e.g. 9876543210).');
       return;
     }
     try {
@@ -209,7 +214,14 @@ export const LeadManagement: React.FC = () => {
 
   const handleCreateMultipleLeads = async (e: React.FormEvent) => {
     e.preventDefault();
-    const validRows = batchRows.filter(r => r.student_name.trim() && r.phone.trim());
+    const validRows = batchRows
+      .filter(r => r.student_name.trim() && r.phone.trim())
+      .map(r => {
+        let p = r.phone.replace(/\D/g, '');
+        if (p.length === 12 && p.startsWith('91')) p = p.slice(2);
+        else if (p.length === 11 && p.startsWith('0')) p = p.slice(1);
+        return { ...r, phone: p };
+      });
     if (validRows.length === 0) {
       alert('Please enter at least one lead with Student Name and 10-digit Phone Number.');
       return;
