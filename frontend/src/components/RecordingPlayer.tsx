@@ -18,7 +18,8 @@ export const RecordingPlayer: React.FC<RecordingPlayerProps> = ({
   const [currentTime, setCurrentTime] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const streamUrl = `/api/telephony/recordings/${callId}/stream`;
+  const token = localStorage.getItem('polarise_token') || '';
+  const streamUrl = `/api/telephony/recordings/${callId}/stream?token=${encodeURIComponent(token)}`;
 
   const togglePlay = () => {
     if (!audioRef.current) return;

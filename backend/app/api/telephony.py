@@ -1,12 +1,14 @@
 import io
 import os
 import json
+from typing import Optional
 from datetime import datetime, timezone
-from fastapi import APIRouter, Depends, HTTPException, Request, Response
+from fastapi import APIRouter, Depends, HTTPException, Request, Response, Header, Query
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.config import settings
+from app.core.security import decode_access_token
 from app.api.auth import get_current_user, require_admin, require_super_admin
 from app.models.models import Call, CallRecording, WebhookEvent, User, ProviderAccount, AuditLog
 from app.schemas.schemas import TelephonyConfigOut, TelephonyConfigUpdate
@@ -76,11 +78,37 @@ async def exotel_webhook(request: Request, db: Session = Depends(get_db)):
     return {"status": "success", "event_id": event_id}
 
 @router.get("/recordings/{call_id}/stream")
-def stream_recording(call_id: int, db: Session = Depends(get_db), current_user: User = Depends(require_admin)):
+def stream_recording(
+    call_id: int,
+    token: Optional[str] = Query(None),
+    authorization: Optional[str] = Header(None),
+    db: Session = Depends(get_db)
+):
     """
     Secure recording playback endpoint.
     Strictly restricted to administrators. Employees are barred from accessing audio recordings.
+    Accepts token via header or query parameter for HTML5 audio streaming.
     """
+    auth_token = None
+    if authorization and authorization.startswith("Bearer "):
+        auth_token = authorization.split(" ")[1]
+    elif token:
+        auth_token = token
+    
+    if not auth_token:
+        raise HTTPException(status_code=401, detail="Authentication token required")
+    
+    try:
+        payload = decode_access_token(auth_token)
+        user_id = payload.get("sub")
+        if not user_id:
+            raise HTTPException(status_code=401, detail="Invalid token")
+        user = db.query(User).filter(User.id == int(user_id)).first()
+        if not user or user.role not in ("super_admin", "operations_admin", "reporting_admin"):
+            raise HTTPException(status_code=403, detail="Administrative privileges required to access recordings")
+    except Exception as e:
+        raise HTTPException(status_code=401, detail=f"Token verification failed: {str(e)}")
+
     call = db.query(Call).filter(Call.id == call_id).first()
     if not call:
         raise HTTPException(status_code=404, detail="Call record not found")

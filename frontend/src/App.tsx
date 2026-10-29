@@ -78,6 +78,14 @@ const ProtectedLayout: React.FC<{ adminOnly?: boolean; children: React.ReactNode
   );
 };
 
+const RootRedirect: React.FC = () => {
+  const { user } = useAuth();
+  if (user && ['super_admin', 'operations_admin', 'reporting_admin'].includes(user.role)) {
+    return <Navigate to="/admin" replace />;
+  }
+  return <EmployeeDashboard />;
+};
+
 export const App: React.FC = () => {
   return (
     <ThemeProvider>
@@ -88,12 +96,12 @@ export const App: React.FC = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
 
-            {/* Employee Routes */}
+            {/* Default Route: Auto-routes Admins to /admin, Employees to EmployeeDashboard */}
             <Route
               path="/"
               element={
                 <ProtectedLayout>
-                  <EmployeeDashboard />
+                  <RootRedirect />
                 </ProtectedLayout>
               }
             />

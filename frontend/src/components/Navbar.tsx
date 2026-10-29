@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCall } from '../context/CallContext';
 import { useTheme, ThemeType } from '../context/ThemeContext';
@@ -48,8 +49,8 @@ export const Navbar: React.FC = () => {
   return (
     <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-slate-200 bg-white/95 px-6 backdrop-blur shadow-sm transition-colors">
       {/* Brand title */}
-      <div className="flex items-center space-x-3">
-        <div className={`flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr ${brandGradient} text-white shadow-md`}>
+      <Link to={isAdmin ? "/admin" : "/"} className="flex items-center space-x-3 hover:opacity-90 transition group">
+        <div className={`flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr ${brandGradient} text-white shadow-md group-hover:scale-105 transition-transform`}>
           <Shield className="h-5 w-5" />
         </div>
         <div>
@@ -67,7 +68,7 @@ export const Navbar: React.FC = () => {
           </div>
           <p className="text-xs font-semibold text-slate-500">Polaris Educational Consultancy</p>
         </div>
-      </div>
+      </Link>
 
       {/* Center Actions: Demo Mode Indicator & Inbound Simulator Button */}
       <div className="flex items-center space-x-3">

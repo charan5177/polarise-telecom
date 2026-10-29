@@ -55,6 +55,24 @@ def get_calls(
         result.append(cout)
     return result
 
+@router.get("/recent", response_model=List[CallOut])
+def get_recent_calls(limit: int = 10, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    return get_calls(limit=limit, db=db, current_user=current_user)
+
+@router.get("/live", response_model=List[CallOut])
+def get_live_calls(db: Session = Depends(get_db), current_user: User = Depends(require_admin)):
+    calls = db.query(Call).filter(Call.status.in_(["ringing", "in-progress"])).order_by(Call.start_time.desc()).all()
+    result = []
+    for c in calls:
+        cout = CallOut.from_orm(c)
+        if c.user:
+            cout.employee_name = c.user.name
+            cout.employee_id_code = c.user.employee_id
+        if c.lead:
+            cout.lead_code = c.lead.lead_code
+        result.append(cout)
+    return result
+
 @router.get("/{call_id}", response_model=CallOut)
 def get_call_detail(call_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     c = db.query(Call).filter(Call.id == call_id).first()
