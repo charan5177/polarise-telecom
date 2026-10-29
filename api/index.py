@@ -29,4 +29,16 @@ if os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME"):
                 except Exception:
                     pass
 
-from app.main import app
+from app.main import app as fastapi_app
+
+# ASGI wrapper to ensure clean routing whether Vercel strips /api prefix or retains it
+async def app(scope, receive, send):
+    if scope["type"] == "http":
+        path = scope.get("path", "")
+        # If incoming path does not have /api prefix, ensure FastAPI can match it
+        if not path.startswith("/api"):
+            # Check if FastAPI has the raw route; if not, prepend /api
+            routes = [route.path for route in fastapi_app.routes]
+            if path not in routes:
+                scope["path"] = "/api" + (path if path.startswith("/") else f"/{path}")
+    await fastapi_app(scope, receive, send)
